@@ -271,6 +271,7 @@ void dungeoninitialiseloadingtiles() {
 
 void togglemarketscene() {
 	if (IsKeyPressed(KEY_O)) {
+		
 		market_scene = !market_scene;
 		cout << "Market Scene Toggled" << endl;
 		
@@ -974,27 +975,45 @@ void marketrender() {
 int main() {
 	initialise();
 
+	while (!titlescreenshown&& !WindowShouldClose()) {
+		BeginDrawing();
+		ClearBackground(BLACK);
+		DrawRectangle(0, 0, 10, 10, GREEN);
+		
+		DrawText("THE SPIRIT TRADER'S ODDESEY", 0, 0, 50, DARKGREEN);
+		DrawText("PRESS ENTER TO PLAY", 0, 100, 25, DARKGREEN);
+		DrawText("Controls :", 0, 150, 25, DARKGREEN);
+		DrawText("1) WASD to MOVE ", 0, 200, 25, DARKGREEN);
+		DrawText("2) SPACE to ATTACK", 0, 250, 25, DARKGREEN);
+		DrawText("3) RIGHT CLICK to SHOW ITEMS", 0, 300, 25, DARKGREEN);
+		DrawText("4) O (Letter) to teleport between Dungeon and Market", 0, 350, 25, DARKGREEN);
+
+
+		EndDrawing();
+		if (IsKeyPressed(KEY_ENTER)) {
+			titlescreenshown = true;
+		}
+	}
+
+
 	while (!WindowShouldClose()) {
-			dungeoninitialiseloadingtiles();
-			while (!WindowShouldClose() && !market_scene) {
-				
-				input();
-				if (~_player.health <= 0) {
-					update();
-					render();
-				}
-				else
-				{
-					std::cout << "You Died" << std::endl;
-				}
-
+		dungeoninitialiseloadingtiles();
+		while (!WindowShouldClose() && !market_scene) {
+			input();
+			if (~_player.health <= 0) {
+				update();
+				render();
 			}
-			while (!WindowShouldClose() && market_scene) {
-				marketinput();
-				marketupdate();
-				marketrender();
-
+			else
+			{
+				std::cout << "You Died" << std::endl;
 			}
+		}
+		while (!WindowShouldClose() && market_scene) {
+			marketinput();
+			marketupdate();
+			marketrender();
+		}
 		
 	}
 	quit();
